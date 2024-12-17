@@ -7,6 +7,8 @@ It combines a modern **Next.js** frontend with a robust **FastAPI** backend, int
 
 The demo in this repository also utilize `Typhoon` free openapi! You can register and try it out for free as well ...hooerey 🎊.
 
+![demo](/docs/demo.gif)
+
 ## 2. (Simple) System Architecture
 
 ![fullstack-webapp](/docs/chatbot-fullstack.svg)
