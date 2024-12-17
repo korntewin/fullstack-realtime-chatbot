@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:17-bullseye
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - .db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend-migration:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-migration
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - typhoon-be/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      ALEMBIC_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+
+  backend-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-webapp
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      backend-migration:
+        condition: service_completed_successfully
+    env_file:
+      - typhoon-be/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      ALEMBIC_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+
+  frontend-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-webapp
+    depends_on:
+      - backend-webapp
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - typhoon-fe/.env
+      - typhoon-fe/.env.development.local
+    environment:
+      LLM_BACKEND_ENDPOINT: http://backend-webapp:8000

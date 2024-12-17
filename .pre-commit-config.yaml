@@ -1,0 +1,69 @@
+default_install_hook_types: [pre-commit, pre-push]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+        stages: [pre-commit]
+      - id: end-of-file-fixer
+        stages: [pre-commit]
+      - id: trailing-whitespace
+        exclude: \.md$
+        stages: [pre-commit]
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint code quality check
+        entry: cd typhoon-fe && npm run lint
+        language: node
+        files: \.(js|jsx|ts|tsx)$
+        stages: [pre-commit]
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        stages: [pre-commit]
+        args: ["--baseline", ".secrets.baseline"]
+        exclude: uv.lock
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.1
+    hooks:
+      - id: ruff-format
+        stages: [pre-commit]
+
+  - repo: local
+    hooks:
+      - id: pylint-pre-commit
+        name: pylint pre-commit check
+        entry: pylint
+        language: system
+        types: [python]
+        require_serial: true # Ensures pylint runs on all files at once
+        stages: [pre-commit]
+        args: ["--rcfile=typhoon-be/pyproject.toml"]
+        exclude: |
+          (?x)^(
+              typhoon-be/alembic/.*|
+              venv/.*|
+              .venv/.*|
+              __pycache__/.*
+          )$
+
+      # Run pylint intensively on all python files only on pre-push
+      - id: pylint-pre-push
+        name: pylint pre-push check (more intensive, maybe a bit slow)
+        entry: pylint
+        language: system
+        pass_filenames: false
+        args: ["--rcfile=typhoon-be/pyproject.toml", "typhoon-be/src/**/**.py", "--jobs=8"]
+        stages: [pre-push]
+        exclude: |
+          (?x)^(
+              typhoon-be/alembic/.*|
+              venv/.*|
+              .venv/.*|
+              __pycache__/.*
+          )$
