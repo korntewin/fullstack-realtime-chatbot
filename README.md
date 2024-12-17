@@ -5,7 +5,7 @@ This repository is a full-stack application template designed for hobbyists and 
 
 It combines a modern **Next.js** frontend with a robust **FastAPI** backend, integrating **LangChain** and LLMs API for AI-powered features. The architecture includes a **PostgreSQL** server, **SSO** authentication with **Google gmail** using **NextAuth**, and support for real-time **Server-Sent Events (SSE)**, making it an excellent starting point for learning how to build, connect, and deploy AI-driven applications!
 
-The demo in this repository also utilize `Typhoon` free openapi! You can register and try it out for free as well ...hooerey 🎊.
+The demo in this repository also utilize `Typhoon` free openapi! You can register and try it out for free [here](https://playground.opentyphoon.ai/) as well ...hooerey 🎊.
 
 ![demo](/docs/demo.gif)
 
