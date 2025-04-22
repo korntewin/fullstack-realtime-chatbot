@@ -22,7 +22,7 @@ TYPHOON_MODELS_NAME_IN_HF = [
 
 # System Prompt
 GET_SESSION_NAME_PROMPT = SystemMessage(
-    content="สรุปเนื้อหาของข้อความที่ได้รับ ให้เป็นหัวข้อของการสนทนาสั้นกระชับ ห้ามใส่เนื้อหาอื่นที่ไม่เกี่ยวข้อง",
+    content="สรุปเนื้อหาของข้อความที่ได้รับ ให้เป็นหัวข้อของการสนทนาสั้นกระชับ ไม่เกิน 5 คำ",
 )
 
 GENERAL_PROMPT = SystemMessage(

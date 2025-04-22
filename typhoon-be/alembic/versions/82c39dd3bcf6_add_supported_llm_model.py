@@ -25,7 +25,7 @@ def upgrade():
     datetime_now = datetime.datetime.now(datetime.timezone.utc)
     llms_data = [
         {
-            "shortname": "typhoon-v1.5-instruct",
+            "shortname": "typhoon-v2-8b-instruct",
             "fullname": "scb10x/llama-3-typhoon-v1.5-8b-instruct",
             "params": json.dumps(
                 {
@@ -40,22 +40,7 @@ def upgrade():
             "updated_at": datetime_now,
         },
         {
-            "shortname": "typhoon-v1.5-instruct-fc",
-            "fullname": "scb10x/llama-3-typhoon-v1.5-8b-instruct",
-            "params": json.dumps(
-                {
-                    "temperature": {"min": 0, "max": 2, "default": 0.7},
-                    "topP": {"min": 0, "max": 1, "default": 0.7},
-                    "topK": {"min": 1, "max": 100, "default": 50},
-                    "repetitionPenalty": {"min": 0, "max": 2, "default": 1.0},
-                    "outputLength": {"min": 0, "max": 512, "default": 512},
-                }
-            ),
-            "created_at": datetime_now,
-            "updated_at": datetime_now,
-        },
-        {
-            "shortname": "typhoon-v1.5x-70b-instruct",
+            "shortname": "typhoon-v2-70b-instruct",
             "fullname": "scb10x/llama-3-typhoon-v1.5x-70b-instruct",
             "params": json.dumps(
                 {
